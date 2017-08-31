@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jt.manage.mapper.ItemMapper">
+	
+	<!--
+		Item item = new Item();
+		item.setPrice(2000);
+	List<T> select(item);  -->
+	
+	<select id="findItemList" resultType="Item">
+		select * from tb_item limit #{start},#{rows}
+	</select>
+	
+	
+	<select id="findItemCount" resultType="int">
+		select count(*) from tb_item
+	</select>
+	
+	<select id="findItemCatName" resultType="string">
+		select name from tb_item_cat where id=#{itemCatId}
+	</select>
+	
+	<!--查询全部商品信息   根据商品修改时间排序  倒叙排列-->
+	<select id="findPageItemList" resultType="Item">
+		select * from tb_item order by updated desc
+	</select>
+	
+	<!--批量修改状态  -->
+	<update id="updateStatus">
+		update tb_item set status = #{status} where id in (
+			
+			<foreach collection="ids" item="id" separator=",">
+				#{id}
+			</foreach>
+		)
+	</update>
+	
+</mapper>
